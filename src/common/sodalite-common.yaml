@@ -1,9 +1,9 @@
-ref: sodalite/stable/${basearch}/common
+ref: sodalite/unstable/${basearch}/common
 selinux: true
 boot-location: modules
 etc-group-members:
   - wheel
-mutate-os-release: "35"
+mutate-os-release: "36"
 documentation: true
 packages:
   # Base

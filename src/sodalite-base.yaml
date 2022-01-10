@@ -1,9 +1,8 @@
-ref: sodalite/stable/${basearch}/base
+ref: sodalite/unstable/${basearch}/base
 repos:
   - copr_decathorpe_elementary-staging
   - copr_stsdc_monitor
-  - fedora-35
-  - fedora-35-updates
+  - fedora-rawhide
 include:
   - common/sodalite-common.yaml
 add-files: [
