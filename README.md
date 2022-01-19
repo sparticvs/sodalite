@@ -1,6 +1,6 @@
 # Sodalite
 
-![Screenshot of Sodalite](https://git.zio.sh/ducky/sodalite-lfs/raw/branch/main/screenshots/screenshot.png?u=2)
+![Screenshot of Sodalite](https://git.zio.sh/ducky/sodalite-lfs/raw/branch/main/screenshots/screenshot.png?u=3)
 
 ## Quickstart
 
@@ -8,24 +8,15 @@ You better know what you're doing, sparky. To get going:
 
 1) Install an OSTree version of Fedora, such as [Fedora Silverblue](https://silverblue.fedoraproject.org/).
 2) Open a terminal and issue these commands:
-	* `sudo ostree remote add --if-not-exists zio https://ostree.zio.sh/repo --no-gpg-verify`
-	* `sudo ostree pull zio:sodalite/stable/x86_64/base`
-	* `sudo rpm-ostree rebase zio:sodalite/stable/x86_64/base`
+	* `sudo ostree remote add --if-not-exists sodalite https://ostree.sodalite.rocks --no-gpg-verify`
+	* `sudo ostree pull sodalite:sodalite/stable/x86_64/base`
+	* `sudo rpm-ostree rebase sodalite:sodalite/stable/x86_64/base`
 3) Stick the kettle on and make yourself a cuppa. It'll take a while.
 4) Reboot when prompted. Sit back in awe as the desktop loads up.
 	* Updates will occur automatically if you update everything from Software (which runs in the background by default and sends desktops notifications).
 	* As they are installed via Flatpak, various GNOME apps will still be lingering. Remove these with `sudo sodalite-uninstall-gnome-apps`.
 
 Confused? Head down to [Getting](#getting).
-
-### Wait, what happened to `install.sh`?
-
-Removed in [1cf0a1f](https://github.com/electricduck/sodalite/commit/1cf0a1fae31c49c797146c90854bc136fa105994), because:
-
-* Fedora Silverblue itself is not for beginners, and you shouldn't really need an easy-peasy installer script to get this going.
-* The script itself might possibly break with future versions of the tools it invokes.
-* You'll learn how things work without blindly running random scripts, and possibly troubleshoot issues since you'll know _where_ something went wrong.
-* It's literally three lines to install. 😜
 
 ## Background
 
@@ -54,7 +45,7 @@ However, there's plenty of stuff that _does_ work rendering Sodalite entirely us
 * Various theming issues, due to be fixed in the upstream:
 	* Some apps appear odd, such as Firefox which entirely lacks rounded corners.
 	* Many Flatpak apps will not be themed and fallback to the Adwaita theme.
-* Many Flatpak apps will be duplicated in the Dock: see [issue #64 on elementary/dock](https://github.com/elementary/dock/issues/64). Although this is one of many issues across elementary, I felt like I needed to bring this one up. Nothing broke on your end!
+* Many Flatpak apps will be duplicated in the Dock: see [issue #64 on elementary/dock](https://github.com/elementary/dock/issues/64). Although this is one of many issues across elementary, this was worth bringing up. Nothing broke on your end!
 * ~~Not enough people are using this masterpiece.~~
 
 <h2 id="getting">Getting</h2>
@@ -68,7 +59,9 @@ An OSTree repository has already been setup for Sodalite, so you don't even need
 	* Custom partitioning is unsupported but does work from experience. The installer is flaky however, and will often stumble on basic problems and giving you very little guidance on what went wrong. For example, `fedora` still being present in the EFI partition if leftover from a previous install &mdash; just delete the directory!
 	* If you're feeling adventurous, install [Fedora IoT](https://getfedora.org/iot/) instead &mdash; it's OSTree too, plus the ISO is over half the size.
 2) Open a terminal and issue the following commands with superuser privileges (as `root`, or with `sudo`):
-	1) `ostree remote add --if-not-exists zio https://ostree.zio.sh/repo --no-gpg-verify`<br />This adds the OSTree repository hosted on [zio.sh](https://zio.sh) (a group of servers partially ran by [@electricduck](https://github.com/electricduck) — it can be trusted). No GPG verification because I'm lazy as sin.
+	1) `ostree remote add --if-not-exists sodalite https://ostree.sodalite.rocks --no-gpg-verify`<br />This adds the remote OSTree repository.
+        - `--no-gpg-verify` is important as there is no GPG verification.
+        - Previous versions of this document use the remote `https://ostree.zio.sh/repo` (named `zio`). This endpoint is still up (in fact, `https://ostree.sodalite.rocks` just redirects to it) and can be used instead. If you're still using it there is no need to change it: everything will still work.
 	2) `ostree pull sodalite/stable/x86_64/base`<br />This pulls the OSTree image for Sodalite, and is split up into four parts (similar to that of Fedora Silverblue). These parts can be substituted for other values:
 		1) `sodalite`: The **name** of the image. That's _SOH-da-lyte_ not _sou-DA-lyte_ — I'm not making a sugar-free beverage here.
 		2) `stable`: The **version** of the image. Possible values:
@@ -78,8 +71,7 @@ An OSTree repository has already been setup for Sodalite, so you don't even need
             * <s>`x86`: [What year is it!?](https://c.tenor.com/9OcQhlCBNG0AAAAd/what-year-is-it-jumanji.gif)</s>
         2) `base`: The **variant** of the image. Possible values:
             * `base`: Everything you'll need to get going (hopefully). Other variants are built on-top of this.
-            * <s>`caral`: Stuff and things.</s> Coming soon™.
-	3) `rpm-ostree rebase zio:sodalite/stable/x86_64/base`<br />This rebases the OS onto Sodalite's image. Remember to substitute any values from before into this one!
+	3) `rpm-ostree rebase sodalite:sodalite/stable/x86_64/base`<br />This rebases the OS onto Sodalite's image. Remember to substitute any values from before into this one!
 3) Reboot when prompted with `systemctl reboot`.
 4) Once logged in, defaults should apply and everything should be as it should.
 
@@ -87,32 +79,30 @@ An OSTree repository has already been setup for Sodalite, so you don't even need
 
 #### Updating
 
-Updates will occur automatically if you update everything from Software (which runs in the background by default and sends desktop notifications).
+Performing a system update can be done by either:
 
-Alternatively, run `rpm-ostree upgrade`.
+- Running `rpm-ostree upgrade` at a terminal.
+- Opening **Software**, navigating to **Updates** and pressing **Update All**.
+  - As Software runs in the background and periodically checks for updates, you may also receive a notification of a new update; clicking on this opens the appropriate page.
+  - An update for the OS may take a while to appear in Software (which will appear as "Operating System Updates"), so the above method is preferred.
+
+Reboot after either method has finished. You can verify the version installed by opening **System Settings** and navigating to **System ➔ Operating System**: the version proceeds the word "Sodalite".
+
+If something breaks, you can rollback by calling `rpm-ostree rollback` at a terminal. Remember to also [create a new issue](https://github.com/sodaliterocks/sodalite/issues/new) if appropriate!
 
 #### GNOME apps
 
-Unless removed them beforehand, you'll have a tonne of GNOME apps still installed from Flatpak. As Flatpak apps are part of the "user" part of the OS they cannot be programatically removed during the rebase. Run to `sodalite-uninstall-gnome-apps` to remove them all.
+Unless removed beforehand, you'll have a tonne of GNOME apps still installed from Flatpak. As Flatpak apps are part of the "user" part of the OS they cannot be programatically removed during the rebase. These apps work fine in Pantheon, and will use the default Adwaita theme, but look extremely out-of-place.
 
-#### Included tools
+Run `sodalite-uninstall-gnome-apps` to remove them all.
 
-For bits of housekeeping, Sodalite also includes a few tools:
+#### Web / Epiphany
 
-* `sodalite-install-epiphany`<br />Installs Web (Epiphany); elementary's default browser.
-* `sodalite-set-hostname [hostname] [description]`<br />Sets the system hostname.
-* `sodalite-uninstall-gnome-apps`<br />Removes GNOME apps installed via Flatpak. You'll be presented with a list of apps and given a choice whether you want to remove them all. Although they play nicely in Pantheon, they look extremely out-of-place.
+As Firefox is Fedora's default browser, we have chose to respect that decision and leave it be. However, Pantheon's preferred browser of choice is a patched version of [Epiphany](https://wiki.gnome.org/Apps/Web) distributed via the AppCenter Flatpak repository.
 
-_The below scripts are ran as services: you should never need to run them manually unless you disable the service (which has the same name)._
+Run `sodalite-install-epiphany` to install.
 
-* `sodalite-generate-oem`<br />Generates the OEM file (`/etc/oem.conf`) to populate the _Hardware_ tab under _System_ in _System Settings_. This information comes from `dmidecode`, so if it looks messed up blame the manufacturer.
-* `sodalite-install-appcenter-flatpak`<br />Installs the AppCenter Flatpak repository, giving you access to the ever-grown "curated" apps for elementaryOS. Also installs a few apps from the repository included in elementaryOS.
-
-_The below scripts are run as autostart for the user: you should need need to run them manually unless you disable the autostart (which has the same name)._
-
-* `sodalite-plank-wrapper`<br />Launches Plank with a wrapper to correct default settings (and update them if the user never changes items).
-
-#### Removal
+### Removal
 
 (todo &mdash; OSTree has several ways and its dependant on your install!)
 
@@ -126,22 +116,27 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Acknowledgements
 
-* [Jorge O. Castro](https://github.com/castrojo), for including Sodalite in [awesome-immutable](https://github.com/castrojo/awesome-immutable).
-* [Timothée Ravier](https://tim.siosm.fr), for his extensive guidance to the community concerning Fedora Silverblue.
 * [Fabio Valentini](https://decathorpe.com/), for providing the extra packages for elementary on Fedora via the [elementary-staging Copr repository](https://copr.fedorainfracloud.org/coprs/decathorpe/elementary-staging/).
-* The contributors to [workstation-ostree-config](https://pagure.io/workstation-ostree-config), giving me a solid ground to work from.
+* [Jorge O. Castro](https://github.com/castrojo), for including Sodalite in [awesome-immutable](https://github.com/castrojo/awesome-immutable).
+* [Timothée Ravier](https://tim.siosm.fr), for their extensive guidance to the community concerning Fedora Silverblue.
+* ["Topfi"](https://github.com/ACertainTopfi), for their various contributions (and joining [@sodaliterocks](https://github.com/sodaliterocks)!).
 * The [elementary team](https://elementary.io/team), for building lovely stuff.
+* The contributors to [workstation-ostree-config](https://pagure.io/workstation-ostree-config), for a solid ground to work from.
 * The amazing photographers/artists of the included wallpapers:
 	* [Adrien Olichon](https://unsplash.com/@adrienolichon)
 	* [Austin Neill](https://unsplash.com/@arstyy)
 	* [Cody Fitzgerald](https://unsplash.com/@cfitz)
+	* [Dustin Humes](https://unsplash.com/@dustinhumes_photography)
+	* [Jack B.](https://unsplash.com/@nervum)
 	* [Karsten Würth](https://unsplash.com/@karsten_wuerth)
+	* [Max Okhrimenko](https://unsplash.com/@maxokhrimenko)
 	* [Nathan Dumlao](https://unsplash.com/@nate_dumlao)
+	* [Ryan Stone](https://unsplash.com/@rstone_design)
 	* [Smaran Alva](https://unsplash.com/@smal)
 	* [Willian Daigneault](https://unsplash.com/@williamdaigneault)
 	* [Zara Walker](https://unsplash.com/@mojoblogs)
 * The [Sodalite mineral](https://en.wikipedia.org/wiki/Sodalite), for the name. It's pronounced _SOH-da-lyte_ not _sou-DA-lyte_, you fool.
-* The Omicron variant of COVID-19, for giving me the initial free time to make this thing. True story.
+* The Omicron variant of COVID-19, for giving [Ducky](https://github.com/electriduck) the initial free time to make this thing. That's not even a joke, that's literally what happened.
 
 ## License
 

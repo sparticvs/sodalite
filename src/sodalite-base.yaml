@@ -1,16 +1,9 @@
-ref: sodalite/unstable/${basearch}/base
-repos:
-  - copr_decathorpe_elementary-staging
-  - copr_stsdc_monitor
-  - fedora-rawhide
+ref: sodalite/stable/${basearch}/base
 include:
   - common/sodalite-common.yaml
-add-files: [
-  ["include/sysroot/etc/sodalite-release__base", "/etc/sodalite-release"]
-]
 
 rojig:
   name: sodalite
   summary: "Sodalite"
   license: MIT
-  description: "A Pantheon experience for Fedora Silverblue: Sodalite."
+  description: "Immutable. Beautiful."
