@@ -15,7 +15,6 @@ repos:
   - copr_decathorpe_elementary-staging
   - copr_stsdc_monitor
   - fedora
-  - fedora-updates
 
 # Packages
 packages:
