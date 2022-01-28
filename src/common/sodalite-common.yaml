@@ -6,7 +6,7 @@ include: [
 ]
 
 # Version
-releasever: "35" # Fedora version
+releasever: "rawhide" # Fedora version
 automatic-version-prefix: "${releasever}-22.1" # <base>-<year>.<release> (SEE: https://github.com/sodaliterocks/sodalite/releases/tag/v/stable/35-22.0)
 automatic-version-suffix: "."
 
